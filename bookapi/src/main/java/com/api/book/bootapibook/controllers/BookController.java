@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 //import org.springframework.stereotype.Controller;
 //import org.springframework.web.bind.annotation.ResponseBody;
 //import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,4 +36,14 @@ public class BookController {
 	public Book getBook(@PathVariable("id") int id) {
 		return bookService.getBookById(id);
 	}
+	
+	@PostMapping("book/new")
+	// whatever json data you put in post request body will go in Book object
+	public Book addBook(@RequestBody Book newBook) {
+		Book addedBook = bookService.addBook(newBook);
+		
+		return addedBook;
+	}
+	
+	
 }

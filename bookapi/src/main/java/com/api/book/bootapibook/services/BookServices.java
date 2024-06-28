@@ -18,14 +18,23 @@ public class BookServices {
 		bookList.add(new Book(2, "Meena2", "Luffy2"));
 	}
 	
+	// get all books
 	public ArrayList<Book> getAllBooks(){
 		return bookList;
 	}
 	
+	// get book by id
 	public Book getBookById(int id) {
 		Book book = null;
 		book = bookList.stream().filter(e -> e.getId() == id).findFirst().get();
 		
 		return book;
+	}
+	
+	// adding new book
+	public Book addBook(Book newBook) {
+		bookList.add(newBook);
+		
+		return newBook;
 	}
 }
