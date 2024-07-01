@@ -28,7 +28,13 @@ public class BookServices {
 	// get book by id
 	public Book getBookById(int id) {
 		Book book = null;
-		book = bookList.stream().filter(e -> e.getId() == id).findFirst().get();
+		try {
+			book = bookList.stream().filter(e -> e.getId() == id).findFirst().get();
+
+			return book;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		return book;
 	}

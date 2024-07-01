@@ -2,8 +2,12 @@ package com.api.book.bootapibook.controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,15 +33,26 @@ public class BookController {
 	private BookServices bookService;
 
 	@GetMapping("/getbooks")
-	public List<Book> getBooks() {
+	public ResponseEntity<List<Book>> getBooks() {
 
 		// jackson auto converts objects into json while returning in body
-		return bookService.getAllBooks();
+		List<Book> allBooks= bookService.getAllBooks();
+		if(allBooks.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+		
+		return ResponseEntity.of(Optional.of(allBooks));
 	}
 
 	@GetMapping("/book/{id}")
-	public Book getBook(@PathVariable("id") int id) {
-		return bookService.getBookById(id);
+	public ResponseEntity<Book> getBook(@PathVariable("id") int id) {
+		Book book =  bookService.getBookById(id);
+		
+		if(book == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+		
+		return ResponseEntity.of(Optional.of(book));
 	}
 
 	@PostMapping("book/new")
