@@ -1,5 +1,7 @@
 package com.api.book.bootapibook.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,6 +20,7 @@ public class Book {
 	private String title;
 	
 	@OneToOne(cascade = CascadeType.ALL) // will perform foreign key first then primary key, author first then book
+	@JsonManagedReference
 	private Author author;
 	
 	public Book(int id, String title, Author author) {
