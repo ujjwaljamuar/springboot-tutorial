@@ -12,6 +12,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
@@ -20,25 +24,30 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	
+
+	@NotBlank(message = "Name field is required")
+	@Size(min = 2, max = 20, message = "length must be 2-20")
 	private String name;
-	
+
 	@Column(unique = true)
+	@Email(message = "Username must be a valid email")
 	private String username;
-	
+
+	@Size(min = 6, max = 20, message = "Password length must be 6-20")
+	@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\W).+$", message = "Password must include at least one uppercase letter, one lowercase letter, and one special character")
 	private String password;
-	
+
 	private String role;
-	
+
 	private boolean enabled;
-	
+
 	private String imageUrl;
-	
+
 	@Column(length = 500)
 	private String about;
-	
+
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<Contact> contacts = new ArrayList<>();	
+	private List<Contact> contacts = new ArrayList<>();
 
 	public User(int id, String name, String username, String password, String role, boolean enabled, String imageUrl,
 			String about, List<Contact> contacts) {
@@ -129,7 +138,5 @@ public class User {
 				+ role + ", enabled=" + enabled + ", imageUrl=" + imageUrl + ", about=" + about + ", contacts="
 				+ contacts + "]";
 	}
-	
-	
 
 }
